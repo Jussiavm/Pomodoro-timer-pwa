@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="styles.css">  
+    <script src="list.js" defer></script>
+    <script src="app.js" defer></script>
+</head>
+<main>
+  <div class="screen">
+    <div class="app-title">Pomodoro timer</div>
+    <div class="status-bar">
+      <svg>
+        <circle id="status-bar"
+          cx="100" cy="100" r="90" 
+          stroke="slateblue" stroke-width="10" fill="none"
+          stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+      </svg>
+      <div class="timer">
+        <span class="minutes">25</span><span class="colon">:</span><span class="seconds">00</span>
+      </div>
+    </div>
+    <div class="buttons-1">
+      <button class="button" id="start-button">Start</button>
+      <button class="button" id="pause-button">Pause</button>
+    </div>
+    <div class="buttons-2">
+      <button class="button" id="reset-button">Reset</button>
+      <button class="button" id="start-pause-button">Start Break</button>
+    </div>
+    <div class = "todo-list-container">
+      <div class="todo-list-header">
+        <h2>ToDo-List</h2>
+        <input type="text" id="todo-input" placeholder="Add a new task...">
+        <span onclick="newElement()" class="add-todo-button">Add</span>
+      </div>
+      <ul id="todo-items" class="todo-list">
+        <li>Task 1</li>
+        <li class="checked">Task 2</li>
+        <li>Task 3</li>
+        <li>Task 4</li>
+      </ul>
+    </div>
+</main>
