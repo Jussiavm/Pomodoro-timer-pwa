@@ -15,6 +15,8 @@ const minuteDiv = document.querySelector('.minutes');
 const secondDiv = document.querySelector('.seconds');
 const pause = document.querySelector('#pause-subtitle');
 const focus = document.querySelector('#focus-subtitle');
+const statusValue = document.getElementById('status-bar');
+const bells = new Audio('./sounds/bell.wav');
 
 let myIntervalFocus;
 let myIntervalPause;
@@ -25,15 +27,25 @@ const appTimerFocus =  () => {
     startPauseBtn.classList.remove('active');
     startBtn.classList.add('active');
 
+    let totalLength = 565.48;
+    let progress = 100;
+    let newDashValue = totalLength * (progress / 100);
+    statusValue.setAttribute('stroke-dasharray', newDashValue);
+
     if (stateFocus === 1) {
         const sessionAmount = 25;
         stateFocus = 0;
         let totalSeconds = sessionAmount * 60;
+        let totalSecondsOg = totalSeconds;
         focus.style.display = 'flex';
         
         const updateSecondsFocus = () => {
 
             totalSeconds--;
+
+            progress = (totalSeconds / totalSecondsOg)*100;
+            newDashValue = totalLength * (progress / 100);
+            statusValue.setAttribute('stroke-dasharray', newDashValue);
 
             let minutesLeft = Math.floor(totalSeconds / 60);
             let secondsLeft = totalSeconds % 60;
@@ -49,6 +61,7 @@ const appTimerFocus =  () => {
             }
 
             if (minutesLeft === 0 && secondsLeft === 0) {
+                bells.play();
                 clearInterval(myIntervalFocus);
                 focus.style.display = 'none';
                 startBtn.classList.remove('active');
@@ -64,19 +77,31 @@ const appTimerFocus =  () => {
 
 const appTimerPause = () => {
 
+    let totalLength = 565.48;
+    let progress = 100;
+    let newDashValue = totalLength * (progress / 100);
+    statusValue.setAttribute('stroke-dasharray', newDashValue);
+
     if (statePause === 1) {
         startBtn.classList.remove('active');
         const sessionAmount = 5;
         minuteDiv.textContent = '05';
         secondDiv.textContent = '00';
         statePause = 0;
+
         let totalSeconds = sessionAmount * 60;
+        let totalSecondsOg = totalSeconds;
+
         pause.style.display = 'flex';
         startPauseBtn.classList.add('active');
 
         const updateSecondsPause = () => {
 
             totalSeconds--;
+
+            progress = (totalSeconds / totalSecondsOg)*100;
+            newDashValue = totalLength * (progress / 100);
+            statusValue.setAttribute('stroke-dasharray', newDashValue);
 
             let minutesLeft = Math.floor(totalSeconds / 60);
             let secondsLeft = totalSeconds % 60;
@@ -92,6 +117,7 @@ const appTimerPause = () => {
             }
 
             if (minutesLeft === 0 && secondsLeft === 0) {
+                bells.play();
                 clearInterval(myIntervalPause);
                 pause.style.display = 'none';
                 startPauseBtn.classList.remove('active');
