@@ -6,8 +6,8 @@ const urlsToCache = [
   '/Pomodoro-timer-pwa/list.js',
   '/Pomodoro-timer-pwa/app.js',
   '/Pomodoro-timer-pwa/manifest.json',
-  '/Pomodoro-timer-pwa/Icons/Icon-large.png',
-  '/Pomodoro-timer-pwa/Icons/Icon-small.png'
+  '/Pomodoro-timer-pwa/icons/icon-large.png',
+  '/Pomodoro-timer-pwa/icons/icon-small.png'
 ];
 
 self.addEventListener('install', event => {
