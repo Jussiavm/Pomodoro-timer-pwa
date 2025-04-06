@@ -1,3 +1,13 @@
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').then(registration => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      }).catch(error => {
+        console.error('Service Worker registration failed:', error);
+      });
+    });
+  }
+
 const startBtn = document.querySelector('#start-button');
 const resetBtn = document.querySelector('#reset-button');
 const startPauseBtn = document.querySelector('#start-pause-button');
