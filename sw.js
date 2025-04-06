@@ -1,13 +1,13 @@
 const CACHE_NAME = 'pomodoro-cache-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/list.js',
-  '/app.js',
-  '/manifest.json',
-  '/Icons/Icon-large.png',
-  '/Icons/Icon-small.png'
+  '/Pomodoro-timer-pwa/',
+  '/Pomodoro-timer-pwa/index.html',
+  '/Pomodoro-timer-pwa/styles.css',
+  '/Pomodoro-timer-pwa/list.js',
+  '/Pomodoro-timer-pwa/app.js',
+  '/Pomodoro-timer-pwa/manifest.json',
+  '/Pomodoro-timer-pwa/Icons/Icon-large.png',
+  '/Pomodoro-timer-pwa/Icons/Icon-small.png'
 ];
 
 self.addEventListener('install', event => {
