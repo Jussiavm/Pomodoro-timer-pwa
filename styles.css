@@ -258,7 +258,7 @@ overflow-y: scroll;
 ul li {
 cursor: pointer;
 position: relative;
-padding: 0.75rem 0.5rem 75rem 2.5rem;
+padding: 0.75rem 0.5rem 7.5rem 2.5rem;
 background: #eee;
 font-size: 1.125rem;
 transition: 0.2s;
@@ -293,7 +293,7 @@ content: '';
 position: absolute;
 border-color: #fff;
 border-style: solid;
-border-width: 0 0.125rem 125rem 0;
+border-width: 0 0.125rem 0.125rem 0;
 top: 0.625rem;
 left: 1rem;
 transform: rotate(45deg);
