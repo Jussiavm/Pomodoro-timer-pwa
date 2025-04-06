@@ -1,6 +1,8 @@
 .screen {
     width: 100%;
+    max-width: 412px;
     min-height: 100vh;
+    aspect-ratio: 412 / 917;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
