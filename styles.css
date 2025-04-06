@@ -26,6 +26,44 @@
     text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
 }
 
+.app-subtitle {
+    width: 59.2%;
+    height: 2%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    color: #474747;
+    font-size: 20px;
+    font-family: Inter;
+    font-weight: 400;
+    word-wrap: break-word;
+    text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+#focus-subtitle {
+    position: absolute;
+    top: 100%;
+    left: 20%;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    display: none; /* Change to 'flex' to show the subtitle */
+}
+
+#pause-subtitle {
+    position: absolute;
+    margin-bottom: 0px;
+    top: 100%;
+    left: 20%;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    display: none; /* Change to 'flex' to show the subtitle */
+}
+
+
 .status-bar {
     position: relative;
     height: 30%;
@@ -97,18 +135,18 @@ svg {
     width:45%;
     height:100%;
     border-radius: 10px;
-    background: none;
     font-size: 18px;
     font-family: Inter;
     font-weight: 700;
     word-wrap: break-word;
     text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);
-    color: #474747;
     text-align: center;
 }
 
 #start-button {
     border: 4px #4DCA72 solid;
+    background: none;
+    color: #474747;
 }
 
 #start-button:hover {
@@ -116,17 +154,15 @@ svg {
     color: white;
 }
 
-#pause-button {
-    border: 4px #D0B132 solid;
-}
-
-#pause-button:hover {
-    background-color: #D0B132;
+#start-button.active {
+    background-color: #4DCA72;
     color: white;
 }
 
 #reset-button {
     border: 4px #303030 solid;
+    background: none;
+    color: #474747;
 }
 
 #reset-button:hover {
@@ -134,11 +170,23 @@ svg {
     color: white;
 }
 
+#reset-button.active {
+    background-color: #303030;
+    color: white;
+}
+
 #start-pause-button {
     border: 4px #142CC9 solid;
+    background: none;
+    color: #474747;
 }
 
 #start-pause-button:hover {
+    background-color: #142CC9;
+    color: white;
+}
+
+#start-pause-button.active {
     background-color: #142CC9;
     color: white;
 }
