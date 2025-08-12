@@ -23,7 +23,32 @@ let myIntervalPause;
 let stateFocus = 1;
 let statePause = 1;
 
+let gradientAnimationId = null;
+let gradientAngle = 0;
+
 const CIRCUMFERENCE = 565.48; // Circumference of the circle in the SVG
+
+function animateBackgroundGradient() {
+  const gradient = document.getElementById('bar3d-bg');
+  if (!gradient) return;
+  gradientAngle = (gradientAngle - 0.2) % 360;
+  const rad = gradientAngle * Math.PI / 180;
+  const x1 = 50 - 50 * Math.cos(rad);
+  const y1 = 50 - 50 * Math.sin(rad);
+  const x2 = 50 + 50 * Math.cos(rad);
+  const y2 = 50 + 50 * Math.sin(rad);
+  gradient.setAttribute('x1', `${x1}%`);
+  gradient.setAttribute('y1', `${y1}%`);
+  gradient.setAttribute('x2', `${x2}%`);
+  gradient.setAttribute('y2', `${y2}%`);
+  gradientAnimationId = requestAnimationFrame(animateBackgroundGradient);
+}
+function stopBackgroundGradientAnimation() {
+  if (gradientAnimationId) {
+    cancelAnimationFrame(gradientAnimationId);
+    gradientAnimationId = null;
+  }
+}
 
 const appTimerFocus =  () => {
     startPauseBtn.classList.remove('active');
@@ -31,6 +56,8 @@ const appTimerFocus =  () => {
 
     statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
     statusValue.setAttribute('stroke-dashoffset', 0);
+
+    if (!gradientAnimationId) animateBackgroundGradient();
 
     if (stateFocus === 1) {
         const sessionAmount = 25;
@@ -67,6 +94,7 @@ const appTimerFocus =  () => {
                 startBtn.classList.remove('active');
                 statePause = 1;
                 appTimerPause();
+                stopBackgroundGradientAnimation();
             }
         }
         myIntervalFocus = setInterval(updateSecondsFocus, 1000);
@@ -79,6 +107,8 @@ const appTimerPause = () => {
 
     statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
     statusValue.setAttribute('stroke-dashoffset', 0);
+
+    if (!gradientAnimationId) animateBackgroundGradient();
 
     if (statePause === 1) {
         startBtn.classList.remove('active');
@@ -121,6 +151,7 @@ const appTimerPause = () => {
                 startPauseBtn.classList.remove('active');
                 stateFocus = 1;
                 appTimerFocus();
+                stopBackgroundGradientAnimation();
             }
         }
         
@@ -151,6 +182,7 @@ resetBtn.addEventListener('click', () => {
     pause.style.display = 'none';
     startBtn.classList.remove('active');
     startPauseBtn.classList.remove('active')
+    stopBackgroundGradientAnimation();
 });
 
 startPauseBtn.addEventListener('click', () => {

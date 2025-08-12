@@ -19,10 +19,25 @@
     </div>
     <div class="status-bar">
       <svg viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="bar3d" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#b3c6ff"/>
+            <stop offset="40%" stop-color="#5a7be7"/>
+            <stop offset="100%" stop-color="#2a357a"/>
+          </linearGradient>
+          <linearGradient id="bar3d-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop id="bg-stop1" offset="0%" stop-color="#e0ffe0"/>       
+            <stop id="bg-stop2" offset="100%" stop-color="#85cbcc"/>
+          </linearGradient>
+        </defs>
+        <circle id="status-bar-background"
+          cx="100" cy="100" r="85"
+          fill="url(#bar3d-bg)" stroke="none" stroke-width="0"/>
         <circle id="status-bar"
           cx="100" cy="100" r="90" 
-          stroke="slateblue" stroke-width="10" fill="none"
-          stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+          stroke="url(#bar3d)" stroke-width="10" fill="none"
+          stroke-dasharray="565.48" stroke-dashoffset="0"
+          stroke-linecap="round"/>
       </svg>      
       <div class="timer">
         <span class="minutes">25</span><span class="colon">:</span><span class="seconds">00</span>

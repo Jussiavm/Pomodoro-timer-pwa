@@ -97,6 +97,10 @@ html, body {
     /* Removed margin-top: 18% */
   }
 
+.statsus-bar-background {
+    position: relative;
+}
+
 #status-bar {
     transform: rotate(-90deg);
     transform-origin: 50% 50%;
@@ -105,11 +109,12 @@ html, body {
 
 .timer {
     position: absolute;
+    z-index: 2;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     white-space: nowrap;
-    color: #474747;
+    color: #292929;
     font-size: 2.5rem;
     font-family: Inter;
     font-weight: 400;
@@ -151,6 +156,7 @@ html, body {
     width:45%;
     height:100%;
     border-radius: 0.625rem;
+    border-style: outset;
     font-size: 1.125rem;
     font-family: Inter;
     font-weight: 700;
@@ -161,6 +167,7 @@ html, body {
 
 #start-button {
     border: 4px #4DCA72 solid;
+    border-style: outset;
     background: none;
     color: #474747;
 }
@@ -177,6 +184,7 @@ html, body {
 
 #reset-button {
     border: 4px #303030 solid;
+    border-style: outset;
     background: none;
     color: #474747;
 }
@@ -193,6 +201,7 @@ html, body {
 
 #start-pause-button {
     border: 4px #142CC9 solid;
+    border-style: outset;
     background: none;
     color: #474747;
 }
