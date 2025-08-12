@@ -23,14 +23,14 @@ let myIntervalPause;
 let stateFocus = 1;
 let statePause = 1;
 
+const CIRCUMFERENCE = 565.48; // Circumference of the circle in the SVG
+
 const appTimerFocus =  () => {
     startPauseBtn.classList.remove('active');
     startBtn.classList.add('active');
 
-    let totalLength = 565.48;
-    let progress = 100;
-    let newDashValue = totalLength * (progress / 100);
-    statusValue.setAttribute('stroke-dasharray', newDashValue);
+    statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
+    statusValue.setAttribute('stroke-dashoffset', 0);
 
     if (stateFocus === 1) {
         const sessionAmount = 25;
@@ -43,9 +43,9 @@ const appTimerFocus =  () => {
 
             totalSeconds--;
 
-            progress = (totalSeconds / totalSecondsOg)*100;
-            newDashValue = totalLength * (progress / 100);
-            statusValue.setAttribute('stroke-dasharray', newDashValue);
+            let progress = (totalSeconds / totalSecondsOg);
+            let offset = CIRCUMFERENCE * progress;
+            statusValue.setAttribute('stroke-dashoffset', offset);
 
             let minutesLeft = Math.floor(totalSeconds / 60);
             let secondsLeft = totalSeconds % 60;
@@ -77,10 +77,8 @@ const appTimerFocus =  () => {
 
 const appTimerPause = () => {
 
-    let totalLength = 565.48;
-    let progress = 100;
-    let newDashValue = totalLength * (progress / 100);
-    statusValue.setAttribute('stroke-dasharray', newDashValue);
+    statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
+    statusValue.setAttribute('stroke-dashoffset', 0);
 
     if (statePause === 1) {
         startBtn.classList.remove('active');
@@ -99,9 +97,9 @@ const appTimerPause = () => {
 
             totalSeconds--;
 
-            progress = (totalSeconds / totalSecondsOg)*100;
-            newDashValue = totalLength * (progress / 100);
-            statusValue.setAttribute('stroke-dasharray', newDashValue);
+            let progress = totalSeconds / totalSecondsOg;
+            let newDashValue = CIRCUMFERENCE * progress;
+            statusValue.setAttribute('stroke-dashoffset', offset);
 
             let minutesLeft = Math.floor(totalSeconds / 60);
             let secondsLeft = totalSeconds % 60;
