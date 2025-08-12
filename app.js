@@ -44,7 +44,7 @@ const appTimerFocus =  () => {
             totalSeconds--;
 
             let progress = (totalSeconds / totalSecondsOg);
-            let offset = CIRCUMFERENCE * progress;
+            let offset = CIRCUMFERENCE * (1-progress);
             statusValue.setAttribute('stroke-dashoffset', offset);
 
             let minutesLeft = Math.floor(totalSeconds / 60);
@@ -98,7 +98,7 @@ const appTimerPause = () => {
             totalSeconds--;
 
             let progress = totalSeconds / totalSecondsOg;
-            let newDashValue = CIRCUMFERENCE * progress;
+            let newDashValue = CIRCUMFERENCE * (1 - progress);
             statusValue.setAttribute('stroke-dashoffset', offset);
 
             let minutesLeft = Math.floor(totalSeconds / 60);
