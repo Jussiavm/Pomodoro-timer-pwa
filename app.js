@@ -17,6 +17,9 @@ const pause = document.querySelector('#pause-subtitle');
 const focus = document.querySelector('#focus-subtitle');
 const statusValue = document.getElementById('status-bar');
 const bells = new Audio('./sounds/bell.wav');
+const statusBarBackground = document.getElementById('status-bar-background');
+
+statusBarBackground.style.display = 'none'; // Initially hide the background circle
 
 let myIntervalFocus;
 let myIntervalPause;
@@ -50,12 +53,44 @@ function stopBackgroundGradientAnimation() {
   }
 }
 
+function colorBackgroundFocus(){
+    const gradient = document.getElementById('bar3d-bg');
+    const bgStop1 = document.getElementById('bg-stop1');
+    const bgStop2 = document.getElementById('bg-stop2');
+    if (gradient) {
+        gradient.setAttribute('x1', '0%');
+        gradient.setAttribute('y1', '0%');
+        gradient.setAttribute('x2', '100%');
+        gradient.setAttribute('y2', '100%');
+        bgStop1.setAttribute('stop-color', '#c4edb7'); // Light green
+        bgStop2.setAttribute('stop-color', '#6bd14b'); // Darker green
+    }
+}
+
+function colorBackgroundPause() {
+    const gradient = document.getElementById('bar3d-bg');
+    const bgStop1 = document.getElementById('bg-stop1');
+    const bgStop2 = document.getElementById('bg-stop2');
+    if (gradient) {
+        gradient.setAttribute('x1', '0%');
+        gradient.setAttribute('y1', '0%');
+        gradient.setAttribute('x2', '100%');
+        gradient.setAttribute('y2', '100%');
+        bgStop1.setAttribute('stop-color', '#e0ffe0'); // Light blue
+        bgStop2.setAttribute('stop-color', '#85cbcc'); // Darker blue
+    }
+}
+
 const appTimerFocus =  () => {
     startPauseBtn.classList.remove('active');
     startBtn.classList.add('active');
 
     statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
     statusValue.setAttribute('stroke-dashoffset', 0);
+
+    statusBarBackground.style.display = '';
+    statusBarBackground.setAttribute('fill', 'url(#bar3d-bg)'); // Set the gradient fill
+    colorBackgroundFocus(); // Change background color to focus colors
 
     if (!gradientAnimationId) animateBackgroundGradient();
 
@@ -107,6 +142,10 @@ const appTimerPause = () => {
 
     statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
     statusValue.setAttribute('stroke-dashoffset', 0);
+
+    statusBarBackground.style.display = '';
+    statusBarBackground.setAttribute('fill', 'url(#bar3d-bg)'); // Set the gradient fill
+    colorBackgroundPause(); // Change background color to focus colors
 
     if (!gradientAnimationId) animateBackgroundGradient();
 
@@ -162,6 +201,9 @@ const appTimerPause = () => {
 }
 
 startBtn.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
     if (stateFocus != 0) {
         clearInterval(myIntervalFocus);
         clearInterval(myIntervalPause);
@@ -172,8 +214,13 @@ startBtn.addEventListener('click', () => {
     } else {appTimerFocus()}
 });
 resetBtn.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
     clearInterval(myIntervalFocus);
     clearInterval(myIntervalPause);
+    statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
+    statusValue.setAttribute('stroke-dashoffset', 0);
     stateFocus = 1;
     statePause = 1;
     minuteDiv.textContent = '25';
@@ -183,9 +230,13 @@ resetBtn.addEventListener('click', () => {
     startBtn.classList.remove('active');
     startPauseBtn.classList.remove('active')
     stopBackgroundGradientAnimation();
+    statusBarBackground.style.display = 'none'; // Hide the background circle
 });
 
 startPauseBtn.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
     if (statePause != 0) {
         clearInterval(myIntervalFocus);
         clearInterval(myIntervalPause);

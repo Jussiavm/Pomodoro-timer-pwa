@@ -97,8 +97,9 @@ html, body {
     /* Removed margin-top: 18% */
   }
 
-.statsus-bar-background {
+.status-bar-background {
     position: relative;
+    display: none; /* Hide the background circle, change to flex to show the background */ 
 }
 
 #status-bar {
@@ -182,6 +183,10 @@ html, body {
     color: white;
 }
 
+#start-button:active {
+    border: 4px #4DCA72 inset;
+}
+
 #reset-button {
     border: 4px #303030 solid;
     border-style: outset;
@@ -199,6 +204,10 @@ html, body {
     color: white;
 }
 
+#reset-button:active {
+    border: 4px #303030 inset;
+}
+
 #start-pause-button {
     border: 4px #142CC9 solid;
     border-style: outset;
@@ -214,6 +223,10 @@ html, body {
 #start-pause-button.active {
     background-color: #142CC9;
     color: white;
+}
+
+#start-pause-button:active {
+    border: 4px #142CC9 inset;
 }
 /* end of button styles */
 
@@ -265,12 +278,15 @@ hr {
 /* Include the padding and border in an element's total width and height */
 .todo-list-container {
     box-sizing: border-box;
+    border-style: outset;
+    border-color: #95cacc;
+    background: #95cacc;
+    border-radius: 25px;
   }
   
 /* Remove margins and padding from the list */
 ul {
 margin: 0;
-padding: 0;
 height: 40%;
 overflow-y: scroll;
 }
@@ -280,7 +296,7 @@ ul li {
 cursor: pointer;
 position: relative;
 padding: 0.75rem 0.5rem 0.75rem 2.5rem;
-background: #eee;
+background: #d6d943;
 font-size: 1.125rem;
 transition: 0.2s;
 
@@ -293,7 +309,7 @@ user-select: none;
 
 /* Set all odd list items to a different color (zebra-stripes) */
 ul li:nth-child(odd) {
-background: #f9f9f9;
+background: #d7d984;
 }
 
 /* Darker background-color on hover */
@@ -303,7 +319,7 @@ background: #ddd;
 
 /* When clicked on, add a background color and strike out text */
 ul li.checked {
-background: #888;
+background: #82d459;
 color: #fff;
 text-decoration: line-through;
 }
@@ -354,7 +370,8 @@ clear: both;
 input {
 margin: 0;
 border: none;
-border-radius: 0;
+border-radius: 5px;
+background-color: hsl(99, 40%, 84%);
 width: 75%;
 padding: 10px;
 float: left;
@@ -366,14 +383,15 @@ font-size: 16px;
 padding: 10px;
 width: 25%;
 background: #d9d9d9;
-color: #555;
+color: #1b1b1b;
 float: left;
 text-align: center;
 font-size: 16px;
 cursor: pointer;
 transition: 0.3s;
-border-radius: 0;
+border-radius: 5px;
 display: flex;
+text-shadow: #142CC9 0px 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 .add-todo-button:hover {
