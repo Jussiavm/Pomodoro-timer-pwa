@@ -1,3 +1,12 @@
+// Listen for messages from app.js to show notifications
+self.addEventListener('message', function(event) {
+  if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
+    self.registration.showNotification('Pomodoro Timer', {
+      body: event.data.body || 'Time is up!',
+      icon: 'icons/icon-large.png'
+    });
+  }
+});
 const CACHE_NAME = 'pomodoro-cache-v7';
 const urlsToCache = [
   '/Pomodoro-timer-pwa/',

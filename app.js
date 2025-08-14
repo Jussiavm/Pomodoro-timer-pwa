@@ -1,3 +1,16 @@
+// Show notification via service worker
+function showTimerNotification(message) {
+    if ('serviceWorker' in navigator && Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(function(registration) {
+            if (registration.active) {
+                registration.active.postMessage({
+                    type: 'SHOW_NOTIFICATION',
+                    body: message
+                });
+            }
+        });
+    }
+}
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/Pomodoro-timer-pwa/sw.js').then(registration => {
@@ -34,7 +47,7 @@ const CIRCUMFERENCE = 565.48; // Circumference of the circle in the SVG
 function animateBackgroundGradient() {
   const gradient = document.getElementById('bar3d-bg');
   if (!gradient) return;
-  gradientAngle = (gradientAngle - 0.2) % 360;
+  gradientAngle = (gradientAngle - 0.4) % 360;
   const rad = gradientAngle * Math.PI / 180;
   const x1 = 50 - 50 * Math.cos(rad);
   const y1 = 50 - 50 * Math.sin(rad);
@@ -81,7 +94,8 @@ function colorBackgroundPause() {
     }
 }
 
-const appTimerFocus =  () => {
+
+const appTimerFocus = () => {
     startPauseBtn.classList.remove('active');
     startBtn.classList.add('active');
 
@@ -97,33 +111,27 @@ const appTimerFocus =  () => {
     if (stateFocus === 1) {
         const sessionAmount = 25;
         stateFocus = 0;
-        let totalSeconds = sessionAmount * 60;
-        let totalSecondsOg = totalSeconds;
+        const totalSecondsOg = sessionAmount * 60;
+        const endTime = Date.now() + totalSecondsOg * 1000;
         focus.style.display = 'flex';
-        
+
         const updateSecondsFocus = () => {
-
-            totalSeconds--;
-
-            let progress = (totalSeconds / totalSecondsOg);
-            let offset = CIRCUMFERENCE * (1-progress);
+            const now = Date.now(); // Current time in milliseconds
+            let remainingMs = endTime - now; 
+            if (remainingMs < 0) remainingMs = 0;
+            let totalSeconds = Math.ceil(remainingMs / 1000);
+            let progress = totalSeconds / totalSecondsOg;
+            let offset = CIRCUMFERENCE * (1 - progress);
             statusValue.setAttribute('stroke-dashoffset', offset);
 
             let minutesLeft = Math.floor(totalSeconds / 60);
             let secondsLeft = totalSeconds % 60;
-            if (minutesLeft < 10) {
-                minuteDiv.textContent = `0${minutesLeft}`;
-            } else {
-                minuteDiv.textContent = minutesLeft;
-            }
-            if (secondsLeft < 10) {
-                secondDiv.textContent = `0${secondsLeft}`;
-            } else {
-                secondDiv.textContent = secondsLeft;
-            }
+            minuteDiv.textContent = minutesLeft < 10 ? `0${minutesLeft}` : minutesLeft;
+            secondDiv.textContent = secondsLeft < 10 ? `0${secondsLeft}` : secondsLeft;
 
-            if (minutesLeft === 0 && secondsLeft === 0) {
+            if (totalSeconds <= 0) {
                 bells.play();
+                showTimerNotification('Focus session is over!');
                 clearInterval(myIntervalFocus);
                 focus.style.display = 'none';
                 startBtn.classList.remove('active');
@@ -131,60 +139,50 @@ const appTimerFocus =  () => {
                 appTimerPause();
                 stopBackgroundGradientAnimation();
             }
-        }
+        };
+        updateSecondsFocus(); // Initial update
         myIntervalFocus = setInterval(updateSecondsFocus, 1000);
     } else {
         alert('Focus already running!');
     }
 }
 
-const appTimerPause = () => {
 
+const appTimerPause = () => {
     statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
     statusValue.setAttribute('stroke-dashoffset', 0);
 
     statusBarBackground.style.display = '';
-    statusBarBackground.setAttribute('fill', 'url(#bar3d-bg)'); // Set the gradient fill
-    colorBackgroundPause(); // Change background color to focus colors
+    statusBarBackground.setAttribute('fill', 'url(#bar3d-bg)');
+    colorBackgroundPause();
 
     if (!gradientAnimationId) animateBackgroundGradient();
 
     if (statePause === 1) {
         startBtn.classList.remove('active');
         const sessionAmount = 5;
-        minuteDiv.textContent = '05';
-        secondDiv.textContent = '00';
-        statePause = 0;
-
-        let totalSeconds = sessionAmount * 60;
-        let totalSecondsOg = totalSeconds;
-
+        const totalSecondsOg = sessionAmount * 60;
+        const endTime = Date.now() + totalSecondsOg * 1000;
         pause.style.display = 'flex';
         startPauseBtn.classList.add('active');
 
         const updateSecondsPause = () => {
-
-            totalSeconds--;
-
+            const now = Date.now();
+            let remainingMs = endTime - now;
+            if (remainingMs < 0) remainingMs = 0;
+            let totalSeconds = Math.ceil(remainingMs / 1000);
             let progress = totalSeconds / totalSecondsOg;
             let offset = CIRCUMFERENCE * (1 - progress);
             statusValue.setAttribute('stroke-dashoffset', offset);
 
             let minutesLeft = Math.floor(totalSeconds / 60);
             let secondsLeft = totalSeconds % 60;
-            if (minutesLeft < 10) {
-                minuteDiv.textContent = `0${minutesLeft}`;
-            } else {
-                minuteDiv.textContent = minutesLeft;
-            }
-            if (secondsLeft < 10) {
-                secondDiv.textContent = `0${secondsLeft}`;
-            } else {
-                secondDiv.textContent = secondsLeft;
-            }
+            minuteDiv.textContent = minutesLeft < 10 ? `0${minutesLeft}` : minutesLeft;
+            secondDiv.textContent = secondsLeft < 10 ? `0${secondsLeft}` : secondsLeft;
 
-            if (minutesLeft === 0 && secondsLeft === 0) {
+            if (totalSeconds <= 0) {
                 bells.play();
+                showTimerNotification('Break is over!');
                 clearInterval(myIntervalPause);
                 pause.style.display = 'none';
                 startPauseBtn.classList.remove('active');
@@ -192,8 +190,8 @@ const appTimerPause = () => {
                 appTimerFocus();
                 stopBackgroundGradientAnimation();
             }
-        }
-        
+        };
+        updateSecondsPause(); // Initial update
         myIntervalPause = setInterval(updateSecondsPause, 1000);
     } else {
         alert('Pause already running!');
