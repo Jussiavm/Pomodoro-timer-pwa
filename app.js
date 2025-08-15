@@ -1,3 +1,7 @@
+// Import necessary Firebase modules
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js"; // Import getAuth, onAuthStateChanged, and signOut
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js"; // Import authentication methods
 // Show notification via service worker
 function showTimerNotification(message) {
     if ('serviceWorker' in navigator && Notification.permission === 'granted') {
@@ -30,7 +34,116 @@ const pause = document.querySelector('#pause-subtitle');
 const focus = document.querySelector('#focus-subtitle');
 const statusValue = document.getElementById('status-bar');
 const bells = new Audio('./sounds/bell.wav');
+
+// Get reference to the sign-out button
+const signOutButton = document.getElementById('sign-out-button');
 const statusBarBackground = document.getElementById('status-bar-background');
+
+// Get references to auth forms and app content
+const authFormsDiv = document.querySelector('.auth-forms');
+const appContentDiv = document.querySelector('.app-content'); // Assuming you have a div with class 'app-content' wrapping your main timer UI
+
+// Get references to sign-up form elements
+const signupForm = document.getElementById('signup-form');
+const signupEmailInput = document.getElementById('signup-email');
+const signupPasswordInput = document.getElementById('signup-password');
+
+// Get references to sign-in form elements
+const signinForm = document.getElementById('signin-form');
+const signinEmailInput = document.getElementById('signin-email');
+const signinPasswordInput = document.getElementById('signin-password');
+
+// TODO: Replace with your actual Firebase config from index.html
+const firebaseConfig = {
+    apiKey: "AIzaSyC1psj2pGnyw5vtr8gQfjAiCEQvF-GnVEo",
+    authDomain: "pomodoro-app-c71d6.firebaseapp.com",
+    projectId: "pomodoro-app-c71d6",
+    storageBucket: "pomodoro-app-c71d6.firebasestorage.app",
+    messagingSenderId: "441807519166",
+    appId: "1:441807519166:web:755374ff7996b7c0434def",
+    measurementId: "G-1HWSKHCDX9"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Get the Auth object
+const auth = getAuth(app);
+
+// Set up an authentication state change listener
+onAuthStateChanged(auth, (user) => { // Removed the duplicate declaration of auth
+    if (user) {
+        // User is signed in
+        console.log("User is signed in:", user);
+        // You might want to display user's email or other info here
+        // Hide auth forms and show app content
+        if (authFormsDiv) authFormsDiv.style.display = 'none';
+        if (appContentDiv) appContentDiv.style.display = 'block'; // Or 'flex', depending on your layout
+    } else {
+        // User is signed out
+        console.log("User is signed out");
+        // Hide app content and show auth forms
+        if (authFormsDiv) authFormsDiv.style.display = 'block'; // Or 'flex'
+        if (appContentDiv) appContentDiv.style.display = 'none';
+    }
+});
+
+// Event listener for sign-up form submission
+signupForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent default form submission
+    const email = signupEmailInput.value;
+    const password = signupPasswordInput.value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed up
+            const user = userCredential.user;
+            console.log("Signed up user:", user);
+            // Clear form fields
+            signupEmailInput.value = '';
+            signupPasswordInput.value = '';
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("Sign up error:", errorCode, errorMessage);
+            // Display error message to the user (you'll need a UI element for this)
+        });
+});
+
+// Event listener for sign-in form submission
+signinForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent default form submission
+    const email = signinEmailInput.value;
+    const password = signinPasswordInput.value;
+
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            console.log("Signed in user:", user);
+            // Clear form fields
+            signinEmailInput.value = '';
+            signinPasswordInput.value = '';
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("Sign in error:", errorCode, errorMessage);
+            // Display error message to the user (you'll need a UI element for this)
+        });
+});
+
+// Event listener for sign-out button click
+signOutButton.addEventListener('click', () => {
+    signOut(auth).then(() => {
+        // Sign-out successful.
+        console.log("User signed out successfully.");
+    }).catch((error) => {
+        // An error happened.
+        console.error("Sign out error:", error);
+    });
+});
 
 statusBarBackground.style.display = 'none'; // Initially hide the background circle
 

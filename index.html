@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#000000">
 </head>
 <main>
-  <div class="screen">
+  <div class="app-content">
     <div class="app-title">Pomodoro timer</div>
     <div class="app-subtitle">
       <div class="app-subtitle" id="focus-subtitle">Focus on your work</div>
@@ -64,5 +64,57 @@
         <li>Task 3</li>
         <li>Task 4</li>
       </ul>
+    <button id="sign-out-button">Sign Out</button>
     </div>
+
+
+    <div class="auth-forms">
+      <!-- Sign-Up Form -->
+      <form id="signup-form">
+        <h2>Sign Up</h2>
+        <label for="signup-email">Email:</label>
+        <input type="email" id="signup-email" required>
+        <label for="signup-password">Password:</label>
+        <input type="password" id="signup-password" required>
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <!-- Sign-In Form -->
+      <form id="login-form">
+        <h2>Sign In</h2>
+        <label for="login-email">Email:</label>
+        <input type="email" id="login-email" required>
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" required>
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+
+    <script type="module">
+      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+    
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyC1psj2pGnyw5vtr8gQfjAiCEQvF-GnVEo",
+        authDomain: "pomodoro-app-c71d6.firebaseapp.com",
+        projectId: "pomodoro-app-c71d6",
+        storageBucket: "pomodoro-app-c71d6.firebasestorage.app",
+        messagingSenderId: "441807519166",
+        appId: "1:441807519166:web:755374ff7996b7c0434def",
+        measurementId: "G-1HWSKHCDX9"
+      };
+    
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const auth = getAuth(app);
+    </script>
 </main>
