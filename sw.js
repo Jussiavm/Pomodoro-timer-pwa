@@ -9,14 +9,14 @@ self.addEventListener('message', function(event) {
 });
 const CACHE_NAME = 'pomodoro-cache-v7';
 const urlsToCache = [
-  '/Pomodoro-timer-pwa/',
-  '/Pomodoro-timer-pwa/index.html',
-  '/Pomodoro-timer-pwa/styles.css',
-  '/Pomodoro-timer-pwa/list.js',
-  '/Pomodoro-timer-pwa/app.js',
-  '/Pomodoro-timer-pwa/manifest.json',
-  '/Pomodoro-timer-pwa/icons/icon-small.png',
-  '/Pomodoro-timer-pwa/icons/icon-large.png'
+  '/', // Change /Pomodoro-timer-pwa/ to /
+  '/index.html', // Remove /Pomodoro-timer-pwa/
+  '/styles.css', // Remove /Pomodoro-timer-pwa/
+  '/list.js',    // Remove /Pomodoro-timer-pwa/
+  '/app.js',     // Remove /Pomodoro-timer-pwa/
+  '/manifest.json', // Remove /Pomodoro-timer-pwa/
+  '/icons/icon-small.png', // The icons path might be correct if icons folder is at root
+  '/icons/icon-large.png'  // The icons path might be correct if icons folder is at root
 ];
 
 self.addEventListener('install', event => {

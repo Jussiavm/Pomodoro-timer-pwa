@@ -17,7 +17,7 @@ function showTimerNotification(message) {
 }
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/Pomodoro-timer-pwa/sw.js').then(registration => {
+      navigator.serviceWorker.register('/sw.js').then(registration => {
         console.log('Service Worker registered with scope:', registration.scope);
       }).catch(error => {
         console.error('Service Worker registration failed:', error);
@@ -35,23 +35,26 @@ const focus = document.querySelector('#focus-subtitle');
 const statusValue = document.getElementById('status-bar');
 const bells = new Audio('./sounds/bell.wav');
 
-// Get reference to the sign-out button
+// Get reference to the show sign-up and sign-in buttons
+const showSignupButton = document.getElementById('show-signup');
+const showLoginButton = document.getElementById('show-login');
+
+// Get reference to the sign-out button and their division
+const selectionButtons = document.querySelector('.selection-buttons'); 
 const signOutButton = document.getElementById('sign-out-button');
 const statusBarBackground = document.getElementById('status-bar-background');
 
 // Get references to auth forms and app content
 const authFormsDiv = document.querySelector('.auth-forms');
-const appContentDiv = document.querySelector('.app-content'); // Assuming you have a div with class 'app-content' wrapping your main timer UI
-
-// Get references to sign-up form elements
+const appContentDiv = document.querySelector('.app-content'); 
 const signupForm = document.getElementById('signup-form');
 const signupEmailInput = document.getElementById('signup-email');
 const signupPasswordInput = document.getElementById('signup-password');
 
 // Get references to sign-in form elements
-const signinForm = document.getElementById('signin-form');
-const signinEmailInput = document.getElementById('signin-email');
-const signinPasswordInput = document.getElementById('signin-password');
+const signinForm = document.getElementById('login-form');
+const signinEmailInput = document.getElementById('login-email');
+const signinPasswordInput = document.getElementById('login-password');
 
 // TODO: Replace with your actual Firebase config from index.html
 const firebaseConfig = {
@@ -356,4 +359,22 @@ startPauseBtn.addEventListener('click', () => {
         appTimerPause();
     } else {appTimerPause()}
     
+});
+
+showLoginButton.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+    signupForm.style.display = 'none'; // Show auth forms
+    signinForm.style.display = 'flex'; // Hide app content
+    selectionButtons.style.display = 'none'; // Hide selection buttons
+});
+
+showSignupButton.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+    signupForm.style.display = 'flex'; // Show auth forms
+    signinForm.style.display = 'none'; // Hide app content
+    selectionButtons.style.display = 'none'; // Hide selection buttons
 });

@@ -230,29 +230,83 @@ html, body {
 #start-pause-button:active {
     border: 4px #142CC9 inset;
 }
+
+#show-signup {
+    border: 4px #4DCA72 solid;
+    border-style: outset;
+    height: 5vh;
+    background: none;
+    color: #474747;
+}
+
+#show-signup:hover {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#show-signup.active {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#show-signup:active {
+    border: 4px #4DCA72 inset;
+}
+
+#show-login {
+    border: 4px #4DCA72 solid;
+    border-style: outset;
+    height: 5vh;
+    background: none;
+    color: #474747;
+}
+
+#show-login:hover {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#show-login.active {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#show-login:active {
+    border: 4px #4DCA72 inset;
+}
 /* end of button styles */
 
 
 .button-rectangle {
+    border: 4px solid;
+    border-style: outset;
     width: 7.1rem;
     height: 2.4rem;
     border-radius: 0.625rem;
 }
 
 #start-button-rectangle {
-    border: 4px #4DCA72 solid;
+    border-color: #4DCA72;
 }
 
 #pause-button-rectangle {
-    border: 4px #D0B132 solid;
+    border-color: #D0B132;
 }
 
 #reset-button-rectangle {
-    border: 4px #303030 solid;
+    border-color: #303030;
 }
 
 #start-pause-button-rectangle {
-    border: 4px #142CC9 solid;
+    border-color: #142CC9;
+}
+
+#show-signup-rectangle {
+    border-color: #4DCA72;
+}
+
+#show-login-rectangle {
+    border-color: #4DCA72;
 }
 
 .button-text {
@@ -402,4 +456,38 @@ background-color: #bbb;
 
 h2 {
 margin-top: 1%;
+}
+
+.auth-forms {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    max-height: 50vh;
+    max-width: 100vw;
+    width: 100%;
+}
+
+.selection-buttons {
+    width: 59.2%;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10vh;
+    margin-top: 10vh;
+}
+
+#signup-form {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#login-form {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
