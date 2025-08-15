@@ -78,12 +78,12 @@ onAuthStateChanged(auth, (user) => { // Removed the duplicate declaration of aut
         // You might want to display user's email or other info here
         // Hide auth forms and show app content
         if (authFormsDiv) authFormsDiv.style.display = 'none';
-        if (appContentDiv) appContentDiv.style.display = 'block'; // Or 'flex', depending on your layout
+        if (appContentDiv) appContentDiv.style.display = 'flex'; // Or 'flex', depending on your layout
     } else {
         // User is signed out
         console.log("User is signed out");
         // Hide app content and show auth forms
-        if (authFormsDiv) authFormsDiv.style.display = 'block'; // Or 'flex'
+        if (authFormsDiv) authFormsDiv.style.display = 'flex'; // Or 'flex'
         if (appContentDiv) appContentDiv.style.display = 'none';
     }
 });
