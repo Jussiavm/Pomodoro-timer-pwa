@@ -10,13 +10,16 @@ self.addEventListener('message', function(event) {
 const CACHE_NAME = 'pomodoro-cache-v7';
 const urlsToCache = [
   '/', // Change /Pomodoro-timer-pwa/ to /
-  '/index.html', // Remove /Pomodoro-timer-pwa/
-  '/styles.css', // Remove /Pomodoro-timer-pwa/
-  '/list.js',    // Remove /Pomodoro-timer-pwa/
-  '/app.js',     // Remove /Pomodoro-timer-pwa/
-  '/manifest.json', // Remove /Pomodoro-timer-pwa/
-  '/icons/icon-small.png', // The icons path might be correct if icons folder is at root
-  '/icons/icon-large.png'  // The icons path might be correct if icons folder is at root
+  '/index.html',
+  '/styles/app-content.css',
+  '/styles/buttons.css',
+  '/styles/auth-forms.css',
+  '/styles/buttons.css',
+  '/list.js',
+  '/app.js',
+  '/manifest.json',
+  '/icons/icon-small.png',
+  '/icons/icon-large.png'
 ];
 
 self.addEventListener('install', event => {
