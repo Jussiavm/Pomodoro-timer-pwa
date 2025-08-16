@@ -14,7 +14,7 @@ const urlsToCache = [
   '/styles/app-content.css',
   '/styles/buttons.css',
   '/styles/auth-forms.css',
-  '/styles/buttons.css',
+  '/styles/global-styles.css',
   '/list.js',
   '/app.js',
   '/manifest.json',
