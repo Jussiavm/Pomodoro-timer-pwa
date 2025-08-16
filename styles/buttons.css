@@ -1,0 +1,168 @@
+/* button divisions */
+
+.buttons-1 {
+    display: inline-flex;
+    flex-direction: row;
+    height: 5%;
+    align-self: stretch;
+    padding-left: 5%;
+    padding-right: 5%;
+    overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+    display: inline-flex;
+}
+
+.buttons-2 {
+    display: inline-flex;
+    flex-direction: row;
+    height: 5%;
+    align-self: stretch;
+    padding-left: 5%;
+    padding-right: 5%;
+    overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+    display: inline-flex;
+}
+
+/* global button styles */
+
+.button {
+    width:45%;
+    height:100%;
+    border-radius: 0.625rem;
+    border-style: outset;
+    font-size: 1.125rem;
+    font-family: Inter;
+    font-weight: 700;
+    word-wrap: break-word;
+    text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.button-text {
+    width: auto;
+    height: auto;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    color: #474747;
+    font-size: 18px;
+    font-family: Inter;
+    font-weight: 700;
+    word-wrap: break-word;
+    text-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* individual button styles */
+
+#start-button {
+    border: 4px #4DCA72 solid;
+    border-style: outset;
+    background: none;
+    color: #474747;
+}
+
+#start-button:hover {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#start-button.active {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#start-button:active {
+    border: 4px #4DCA72 inset;
+}
+
+#reset-button {
+    border: 4px #303030 solid;
+    border-style: outset;
+    background: none;
+    color: #474747;
+}
+
+#reset-button:hover {
+    background-color: #303030;
+    color: white;
+}
+
+#reset-button.active {
+    background-color: #303030;
+    color: white;
+}
+
+#reset-button:active {
+    border: 4px #303030 inset;
+}
+
+#start-pause-button {
+    border: 4px #142CC9 solid;
+    border-style: outset;
+    background: none;
+    color: #474747;
+}
+
+#start-pause-button:hover {
+    background-color: #142CC9;
+    color: white;
+}
+
+#start-pause-button.active {
+    background-color: #142CC9;
+    color: white;
+}
+
+#start-pause-button:active {
+    border: 4px #142CC9 inset;
+}
+
+#show-signup {
+    border: 4px #4DCA72 solid;
+    border-style: outset;
+    height: 5vh;
+    background: none;
+    color: #474747;
+}
+
+#show-signup:hover {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#show-signup.active {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#show-signup:active {
+    border: 4px #4DCA72 inset;
+}
+
+#show-login {
+    border: 4px #4DCA72 solid;
+    border-style: outset;
+    height: 5vh;
+    background: none;
+    color: #474747;
+}
+
+#show-login:hover {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#show-login.active {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#show-login:active {
+    border: 4px #4DCA72 inset;
+}
+
+

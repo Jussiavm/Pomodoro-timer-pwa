@@ -1,0 +1,22 @@
+/*initial setup for app-content and auth-forms*/
+.auth-forms { display: flex; }
+.app-content { display: none; }  
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(180deg, rgba(202, 75, 75, 0) 0%, rgba(202, 75, 75, 0.20) 100%), #CCF0B1;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+hr {
+    color: #474747;
+    width: 100%;
+}
+
+h2 {
+margin-top: 1%;
+}
