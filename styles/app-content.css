@@ -54,6 +54,7 @@
     margin-top: 0px;
     padding-bottom: 0px;
     display: none; /* Change to 'flex' to show the subtitle */
+    font-size: x-large;
 }
 
 #pause-subtitle {
@@ -122,6 +123,8 @@
     border-color: #95cacc;
     background: #95cacc;
     border-radius: 25px;
+    width: 60vw;
+    height: 20vh;
   }
   
 /* Remove margins and padding from the list */
@@ -139,6 +142,7 @@ padding: 0.75rem 0.5rem 0.75rem 2.5rem;
 background: #d6d943;
 font-size: 1.125rem;
 transition: 0.2s;
+width: 85%;
 
 /* make the list items unselectable */
 -webkit-user-select: none;

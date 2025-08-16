@@ -257,3 +257,26 @@
 #go-back-signin:active {
     border: 4px #d6ad62 inset;
 }
+
+#sign-out-button {
+    border: 4px #d6ad62 solid;
+    border-style: outset;
+    height: 5vh;
+    background: none;
+    color: #474747;
+    margin-top: 5vh;
+}
+
+#sign-out-button:hover {
+    background-color: #d6ad62;
+    color: white;
+}
+
+#sign-out-button.active {
+    background-color: #d6ad62;
+    color: white;
+}
+
+#sign-out-button:active {
+    border: 4px #d6ad62 inset;
+}

@@ -34,6 +34,7 @@ const pause = document.querySelector('#pause-subtitle');
 const focus = document.querySelector('#focus-subtitle');
 const statusValue = document.getElementById('status-bar');
 const bells = new Audio('./sounds/bell.wav');
+const statusBarDiv = document.querySelector('.status-bar');
 
 // Get reference to the show sign-up and sign-in and go-back buttons
 const showSignupButton = document.getElementById('show-signup');
@@ -75,22 +76,261 @@ const app = initializeApp(firebaseConfig);
 // Get the Auth object
 const auth = getAuth(app);
 
-// Set up an authentication state change listener
-onAuthStateChanged(auth, (user) => { // Removed the duplicate declaration of auth
-    if (user) {
-        // User is signed in
-        console.log("User is signed in:", user);
-        // You might want to display user's email or other info here
-        // Hide auth forms and show app content
-        if (authFormsDiv) authFormsDiv.style.display = 'none';
-        if (appContentDiv) appContentDiv.style.display = 'flex'; // Or 'flex', depending on your layout
-    } else {
-        // User is signed out
-        console.log("User is signed out");
-        // Hide app content and show auth forms
-        if (authFormsDiv) authFormsDiv.style.display = 'flex'; // Or 'flex'
-        if (appContentDiv) appContentDiv.style.display = 'none';
+// Initial set-up for app-content
+statusBarDiv.style.display = 'none'; // Initially hide the status bar
+
+let myIntervalFocus;
+let myIntervalPause;
+let stateFocus = 1;
+let statePause = 1;
+
+let gradientAnimationId = null;
+let gradientAngle = 0;
+
+const CIRCUMFERENCE = 565.48; // Circumference of the circle in the SVG
+
+function animateBackgroundGradient(angDiff) {
+  const gradient = document.getElementById('bar3d-bg');
+  if (!gradient) return;
+  gradientAngle = (gradientAngle - angDiff) % 360;
+  const rad = gradientAngle * Math.PI / 180;
+  const x1 = 50 - 50 * Math.cos(rad);
+  const y1 = 50 - 50 * Math.sin(rad);
+  const x2 = 50 + 50 * Math.cos(rad);
+  const y2 = 50 + 50 * Math.sin(rad);
+  gradient.setAttribute('x1', `${x1}%`);
+  gradient.setAttribute('y1', `${y1}%`);
+  gradient.setAttribute('x2', `${x2}%`);
+  gradient.setAttribute('y2', `${y2}%`);
+  gradientAnimationId = requestAnimationFrame(() => animateBackgroundGradient(angDiff));
+}
+function stopBackgroundGradientAnimation() {
+  if (gradientAnimationId) {
+    cancelAnimationFrame(gradientAnimationId);
+    gradientAnimationId = null;
+  }
+}
+
+function colorBackgroundFocus(){
+    const gradient = document.getElementById('bar3d-bg');
+    const bgStop1 = document.getElementById('bg-stop1');
+    const bgStop2 = document.getElementById('bg-stop2');
+    if (gradient) {
+        gradient.setAttribute('x1', '0%');
+        gradient.setAttribute('y1', '0%');
+        gradient.setAttribute('x2', '100%');
+        gradient.setAttribute('y2', '100%');
+        bgStop1.setAttribute('stop-color', '#c4edb7'); // Light green
+        bgStop2.setAttribute('stop-color', '#358f1aff'); // Darker green
     }
+}
+
+function colorBackgroundPause() {
+    const gradient = document.getElementById('bar3d-bg');
+    const bgStop1 = document.getElementById('bg-stop1');
+    const bgStop2 = document.getElementById('bg-stop2');
+    if (gradient) {
+        gradient.setAttribute('x1', '0%');
+        gradient.setAttribute('y1', '0%');
+        gradient.setAttribute('x2', '100%');
+        gradient.setAttribute('y2', '100%');
+        bgStop1.setAttribute('stop-color', '#e0ffe0'); // Light blue
+        bgStop2.setAttribute('stop-color', '#2f797aff'); // Darker blue
+    }
+}
+
+
+const appTimerFocus = () => {
+    startPauseBtn.classList.remove('active');
+    startBtn.classList.add('active');
+
+    statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
+    statusValue.setAttribute('stroke-dashoffset', 0);
+
+    // Show the status bar
+    statusBarDiv.style.display = '';
+    // Set the gradient fill for the status bar background
+    statusBarBackground.setAttribute('fill', 'url(#bar3d-bg)');
+    colorBackgroundFocus(); // Change background color to focus colors
+
+    if (!gradientAnimationId) animateBackgroundGradient(0.5);
+
+    if (stateFocus === 1) {
+        const sessionAmount = 25;
+        stateFocus = 0;
+        const totalSecondsOg = sessionAmount * 60;
+        const endTime = Date.now() + totalSecondsOg * 1000;
+        focus.style.display = 'flex';
+
+        const updateSecondsFocus = () => {
+            const now = Date.now(); // Current time in milliseconds
+            let remainingMs = endTime - now; 
+            if (remainingMs < 0) remainingMs = 0;
+            let totalSeconds = Math.ceil(remainingMs / 1000);
+            let progress = totalSeconds / totalSecondsOg;
+            let offset = CIRCUMFERENCE * (1 - progress);
+            statusValue.setAttribute('stroke-dashoffset', offset);
+
+            let minutesLeft = Math.floor(totalSeconds / 60);
+            let secondsLeft = totalSeconds % 60;
+            minuteDiv.textContent = minutesLeft < 10 ? `0${minutesLeft}` : minutesLeft;
+            secondDiv.textContent = secondsLeft < 10 ? `0${secondsLeft}` : secondsLeft;
+
+            if (totalSeconds <= 0) {
+                bells.play();
+                showTimerNotification('Focus session is over!');
+                clearInterval(myIntervalFocus);
+                focus.style.display = 'none';
+                startBtn.classList.remove('active');
+                statePause = 1;
+                appTimerPause();
+                stopBackgroundGradientAnimation();
+            }
+        };
+        updateSecondsFocus(); // Initial update
+        myIntervalFocus = setInterval(updateSecondsFocus, 1000);
+    } else {
+        alert('Focus already running!');
+    }
+}
+
+
+const appTimerPause = () => {
+    statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
+    statusValue.setAttribute('stroke-dashoffset', 0);
+
+    // Show the status bar
+    statusBarDiv.style.display = '';
+    // Set the gradient fill for the status bar background
+    statusBarBackground.setAttribute('fill', 'url(#bar3d-bg)');
+    colorBackgroundPause();
+
+    if (!gradientAnimationId) animateBackgroundGradient(0.3);
+
+    if (statePause === 1) {
+        startBtn.classList.remove('active');
+        const sessionAmount = 5;
+        const totalSecondsOg = sessionAmount * 60;
+        const endTime = Date.now() + totalSecondsOg * 1000;
+        pause.style.display = 'flex';
+        startPauseBtn.classList.add('active');
+
+        const updateSecondsPause = () => {
+            const now = Date.now();
+            let remainingMs = endTime - now;
+            if (remainingMs < 0) remainingMs = 0;
+            let totalSeconds = Math.ceil(remainingMs / 1000);
+            let progress = totalSeconds / totalSecondsOg;
+            let offset = CIRCUMFERENCE * (1 - progress);
+            statusValue.setAttribute('stroke-dashoffset', offset);
+
+            let minutesLeft = Math.floor(totalSeconds / 60);
+            let secondsLeft = totalSeconds % 60;
+            minuteDiv.textContent = minutesLeft < 10 ? `0${minutesLeft}` : minutesLeft;
+            secondDiv.textContent = secondsLeft < 10 ? `0${secondsLeft}` : secondsLeft;
+
+            if (totalSeconds <= 0) {
+                bells.play();
+                showTimerNotification('Break is over!');
+                clearInterval(myIntervalPause);
+                pause.style.display = 'none';
+                startPauseBtn.classList.remove('active');
+                stateFocus = 1;
+                appTimerFocus();
+                stopBackgroundGradientAnimation();
+            }
+        };
+        updateSecondsPause(); // Initial update
+        myIntervalPause = setInterval(updateSecondsPause, 1000);
+    } else {
+        alert('Pause already running!');
+    }
+}
+
+startBtn.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+    if (stateFocus != 0) {
+        clearInterval(myIntervalFocus);
+        clearInterval(myIntervalPause);
+        stopBackgroundGradientAnimation()
+        statePause = 1;
+        focus.style.display = 'none';
+        pause.style.display = 'none';
+        appTimerFocus();
+    } else {appTimerFocus()}
+});
+resetBtn.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+    clearInterval(myIntervalFocus);
+    clearInterval(myIntervalPause);
+    statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
+    statusValue.setAttribute('stroke-dashoffset', 0);
+    stateFocus = 1;
+    statePause = 1;
+    minuteDiv.textContent = '25';
+    secondDiv.textContent = '00';
+    focus.style.display = 'none';
+    pause.style.display = 'none';
+    startBtn.classList.remove('active');
+    startPauseBtn.classList.remove('active')
+    stopBackgroundGradientAnimation();
+    // Hide the status bar
+    statusBarDiv.style.display = 'none';
+});
+
+startPauseBtn.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+    if (statePause != 0) {
+        clearInterval(myIntervalFocus);
+        clearInterval(myIntervalPause);
+        stopBackgroundGradientAnimation()
+        stateFocus = 1;
+        focus.style.display = 'none';
+        appTimerPause();;
+    } else {appTimerPause()}
+    
+});
+
+showLoginButton.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+    signupForm.style.display = 'none'; // Show auth forms
+    signinForm.style.display = 'flex'; // Hide app content
+    selectionButtons.style.display = 'none'; // Hide selection buttons
+});
+
+showSignupButton.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+    signupForm.style.display = 'flex'; // Show auth forms
+    signinForm.style.display = 'none'; // Hide app content
+    selectionButtons.style.display = 'none'; // Hide selection buttons
+});
+
+goBackButtonSignin.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+    signupForm.style.display = 'none'; // Show auth forms
+    signinForm.style.display = 'none'; // Hide app content
+    selectionButtons.style.display = 'flex'; // Show selection buttons
+});
+
+goBackButtonSignup.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+    signupForm.style.display = 'none'; // Show auth forms
+    signinForm.style.display = 'none'; // Hide app content
+    selectionButtons.style.display = 'flex'; // Show selection buttons
 });
 
 // Event listener for sign-up form submission
@@ -150,251 +390,20 @@ signOutButton.addEventListener('click', () => {
     });
 });
 
-statusBarBackground.style.display = 'none'; // Initially hide the background circle
-
-let myIntervalFocus;
-let myIntervalPause;
-let stateFocus = 1;
-let statePause = 1;
-
-let gradientAnimationId = null;
-let gradientAngle = 0;
-
-const CIRCUMFERENCE = 565.48; // Circumference of the circle in the SVG
-
-function animateBackgroundGradient() {
-  const gradient = document.getElementById('bar3d-bg');
-  if (!gradient) return;
-  gradientAngle = (gradientAngle - 0.4) % 360;
-  const rad = gradientAngle * Math.PI / 180;
-  const x1 = 50 - 50 * Math.cos(rad);
-  const y1 = 50 - 50 * Math.sin(rad);
-  const x2 = 50 + 50 * Math.cos(rad);
-  const y2 = 50 + 50 * Math.sin(rad);
-  gradient.setAttribute('x1', `${x1}%`);
-  gradient.setAttribute('y1', `${y1}%`);
-  gradient.setAttribute('x2', `${x2}%`);
-  gradient.setAttribute('y2', `${y2}%`);
-  gradientAnimationId = requestAnimationFrame(animateBackgroundGradient);
-}
-function stopBackgroundGradientAnimation() {
-  if (gradientAnimationId) {
-    cancelAnimationFrame(gradientAnimationId);
-    gradientAnimationId = null;
-  }
-}
-
-function colorBackgroundFocus(){
-    const gradient = document.getElementById('bar3d-bg');
-    const bgStop1 = document.getElementById('bg-stop1');
-    const bgStop2 = document.getElementById('bg-stop2');
-    if (gradient) {
-        gradient.setAttribute('x1', '0%');
-        gradient.setAttribute('y1', '0%');
-        gradient.setAttribute('x2', '100%');
-        gradient.setAttribute('y2', '100%');
-        bgStop1.setAttribute('stop-color', '#c4edb7'); // Light green
-        bgStop2.setAttribute('stop-color', '#6bd14b'); // Darker green
-    }
-}
-
-function colorBackgroundPause() {
-    const gradient = document.getElementById('bar3d-bg');
-    const bgStop1 = document.getElementById('bg-stop1');
-    const bgStop2 = document.getElementById('bg-stop2');
-    if (gradient) {
-        gradient.setAttribute('x1', '0%');
-        gradient.setAttribute('y1', '0%');
-        gradient.setAttribute('x2', '100%');
-        gradient.setAttribute('y2', '100%');
-        bgStop1.setAttribute('stop-color', '#e0ffe0'); // Light blue
-        bgStop2.setAttribute('stop-color', '#85cbcc'); // Darker blue
-    }
-}
-
-
-const appTimerFocus = () => {
-    startPauseBtn.classList.remove('active');
-    startBtn.classList.add('active');
-
-    statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
-    statusValue.setAttribute('stroke-dashoffset', 0);
-
-    statusBarBackground.style.display = '';
-    statusBarBackground.setAttribute('fill', 'url(#bar3d-bg)'); // Set the gradient fill
-    colorBackgroundFocus(); // Change background color to focus colors
-
-    if (!gradientAnimationId) animateBackgroundGradient();
-
-    if (stateFocus === 1) {
-        const sessionAmount = 25;
-        stateFocus = 0;
-        const totalSecondsOg = sessionAmount * 60;
-        const endTime = Date.now() + totalSecondsOg * 1000;
-        focus.style.display = 'flex';
-
-        const updateSecondsFocus = () => {
-            const now = Date.now(); // Current time in milliseconds
-            let remainingMs = endTime - now; 
-            if (remainingMs < 0) remainingMs = 0;
-            let totalSeconds = Math.ceil(remainingMs / 1000);
-            let progress = totalSeconds / totalSecondsOg;
-            let offset = CIRCUMFERENCE * (1 - progress);
-            statusValue.setAttribute('stroke-dashoffset', offset);
-
-            let minutesLeft = Math.floor(totalSeconds / 60);
-            let secondsLeft = totalSeconds % 60;
-            minuteDiv.textContent = minutesLeft < 10 ? `0${minutesLeft}` : minutesLeft;
-            secondDiv.textContent = secondsLeft < 10 ? `0${secondsLeft}` : secondsLeft;
-
-            if (totalSeconds <= 0) {
-                bells.play();
-                showTimerNotification('Focus session is over!');
-                clearInterval(myIntervalFocus);
-                focus.style.display = 'none';
-                startBtn.classList.remove('active');
-                statePause = 1;
-                appTimerPause();
-                stopBackgroundGradientAnimation();
-            }
-        };
-        updateSecondsFocus(); // Initial update
-        myIntervalFocus = setInterval(updateSecondsFocus, 1000);
+// Set up an authentication state change listener
+onAuthStateChanged(auth, (user) => { // Removed the duplicate declaration of auth
+    if (user) {
+        // User is signed in
+        console.log("User is signed in:", user);
+        // You might want to display user's email or other info here
+        // Hide auth forms and show app content
+        if (authFormsDiv) authFormsDiv.style.display = 'none';
+        if (appContentDiv) appContentDiv.style.display = 'flex'; // Or 'flex', depending on your layout
     } else {
-        alert('Focus already running!');
+        // User is signed out
+        console.log("User is signed out");
+        // Hide app content and show auth forms
+        if (authFormsDiv) authFormsDiv.style.display = 'flex'; // Or 'flex'
+        if (appContentDiv) appContentDiv.style.display = 'none';
     }
-}
-
-
-const appTimerPause = () => {
-    statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
-    statusValue.setAttribute('stroke-dashoffset', 0);
-
-    statusBarBackground.style.display = '';
-    statusBarBackground.setAttribute('fill', 'url(#bar3d-bg)');
-    colorBackgroundPause();
-
-    if (!gradientAnimationId) animateBackgroundGradient();
-
-    if (statePause === 1) {
-        startBtn.classList.remove('active');
-        const sessionAmount = 5;
-        const totalSecondsOg = sessionAmount * 60;
-        const endTime = Date.now() + totalSecondsOg * 1000;
-        pause.style.display = 'flex';
-        startPauseBtn.classList.add('active');
-
-        const updateSecondsPause = () => {
-            const now = Date.now();
-            let remainingMs = endTime - now;
-            if (remainingMs < 0) remainingMs = 0;
-            let totalSeconds = Math.ceil(remainingMs / 1000);
-            let progress = totalSeconds / totalSecondsOg;
-            let offset = CIRCUMFERENCE * (1 - progress);
-            statusValue.setAttribute('stroke-dashoffset', offset);
-
-            let minutesLeft = Math.floor(totalSeconds / 60);
-            let secondsLeft = totalSeconds % 60;
-            minuteDiv.textContent = minutesLeft < 10 ? `0${minutesLeft}` : minutesLeft;
-            secondDiv.textContent = secondsLeft < 10 ? `0${secondsLeft}` : secondsLeft;
-
-            if (totalSeconds <= 0) {
-                bells.play();
-                showTimerNotification('Break is over!');
-                clearInterval(myIntervalPause);
-                pause.style.display = 'none';
-                startPauseBtn.classList.remove('active');
-                stateFocus = 1;
-                appTimerFocus();
-                stopBackgroundGradientAnimation();
-            }
-        };
-        updateSecondsPause(); // Initial update
-        myIntervalPause = setInterval(updateSecondsPause, 1000);
-    } else {
-        alert('Pause already running!');
-    }
-}
-
-startBtn.addEventListener('click', () => {
-    if (window.navigator.vibrate) {
-        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
-    }
-    if (stateFocus != 0) {
-        clearInterval(myIntervalFocus);
-        clearInterval(myIntervalPause);
-        statePause = 1;
-        focus.style.display = 'none';
-        pause.style.display = 'none';
-        appTimerFocus();
-    } else {appTimerFocus()}
-});
-resetBtn.addEventListener('click', () => {
-    if (window.navigator.vibrate) {
-        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
-    }
-    clearInterval(myIntervalFocus);
-    clearInterval(myIntervalPause);
-    statusValue.setAttribute('stroke-dasharray', CIRCUMFERENCE);
-    statusValue.setAttribute('stroke-dashoffset', 0);
-    stateFocus = 1;
-    statePause = 1;
-    minuteDiv.textContent = '25';
-    secondDiv.textContent = '00';
-    focus.style.display = 'none';
-    pause.style.display = 'none';
-    startBtn.classList.remove('active');
-    startPauseBtn.classList.remove('active')
-    stopBackgroundGradientAnimation();
-    statusBarBackground.style.display = 'none'; // Hide the background circle
-});
-
-startPauseBtn.addEventListener('click', () => {
-    if (window.navigator.vibrate) {
-        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
-    }
-    if (statePause != 0) {
-        clearInterval(myIntervalFocus);
-        clearInterval(myIntervalPause);
-        stateFocus = 1;
-        focus.style.display = 'none';
-        appTimerPause();
-    } else {appTimerPause()}
-    
-});
-
-showLoginButton.addEventListener('click', () => {
-    if (window.navigator.vibrate) {
-        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
-    }
-    signupForm.style.display = 'none'; // Show auth forms
-    signinForm.style.display = 'flex'; // Hide app content
-    selectionButtons.style.display = 'none'; // Hide selection buttons
-});
-
-showSignupButton.addEventListener('click', () => {
-    if (window.navigator.vibrate) {
-        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
-    }
-    signupForm.style.display = 'flex'; // Show auth forms
-    signinForm.style.display = 'none'; // Hide app content
-    selectionButtons.style.display = 'none'; // Hide selection buttons
-});
-
-goBackButtonSignin.addEventListener('click', () => {
-    if (window.navigator.vibrate) {
-        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
-    }
-    signupForm.style.display = 'none'; // Show auth forms
-    signinForm.style.display = 'none'; // Hide app content
-    selectionButtons.style.display = 'flex'; // Show selection buttons
-});
-
-goBackButtonSignup.addEventListener('click', () => {
-    if (window.navigator.vibrate) {
-        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
-    }
-    signupForm.style.display = 'none'; // Show auth forms
-    signinForm.style.display = 'none'; // Hide app content
-    selectionButtons.style.display = 'flex'; // Show selection buttons
 });
