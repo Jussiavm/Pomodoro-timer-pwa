@@ -35,9 +35,11 @@ const focus = document.querySelector('#focus-subtitle');
 const statusValue = document.getElementById('status-bar');
 const bells = new Audio('./sounds/bell.wav');
 
-// Get reference to the show sign-up and sign-in buttons
+// Get reference to the show sign-up and sign-in and go-back buttons
 const showSignupButton = document.getElementById('show-signup');
 const showLoginButton = document.getElementById('show-login');
+const goBackButtonSignup = document.getElementById('go-back-signup');
+const goBackButtonSignin = document.getElementById('go-back-signin');
 
 // Get reference to the sign-out button and their division
 const selectionButtons = document.querySelector('.selection-buttons'); 
@@ -377,4 +379,22 @@ showSignupButton.addEventListener('click', () => {
     signupForm.style.display = 'flex'; // Show auth forms
     signinForm.style.display = 'none'; // Hide app content
     selectionButtons.style.display = 'none'; // Hide selection buttons
+});
+
+goBackButtonSignin.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+    signupForm.style.display = 'none'; // Show auth forms
+    signinForm.style.display = 'none'; // Hide app content
+    selectionButtons.style.display = 'flex'; // Show selection buttons
+});
+
+goBackButtonSignup.addEventListener('click', () => {
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+    signupForm.style.display = 'none'; // Show auth forms
+    signinForm.style.display = 'none'; // Hide app content
+    selectionButtons.style.display = 'flex'; // Show selection buttons
 });

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomodoro Timer</title>
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/global-styles.css">
     <link rel="stylesheet" href="styles/buttons.css">   
     <link rel="stylesheet" href="styles/app-content.css"> 
     <link rel="stylesheet" href="styles/auth-forms.css">
@@ -79,22 +79,32 @@
       </div>
       <!-- Sign-Up Form -->
       <form id="signup-form">
-        <h2>Sign Up</h2>
-        <label for="signup-email">Email:</label>
-        <input type="email" id="signup-email" required>
-        <label for="signup-password">Password:</label>
-        <input type="password" id="signup-password" required>
-        <button type="submit">Sign Up</button>
+        <h1>Sign Up</h1>
+        <div class="input-row">
+          <h2 id="signup-email-heading">Email</h2>
+          <input type="email" class="loginSignupFields" id="signup-email" required aria-labelledby="signup-email-heading" placeholder="Enter your email">
+        </div>
+        <div class="input-row">
+          <h2 id="signup-password-heading">Password</h2>
+          <input type="password" class="loginSignupFields" id="signup-password" required aria-labelledby="signup-password-heading" placeholder="Enter your password">
+        </div>
+        <button type="submit" class="button" id="signUpButton">Sign Up</button>
+        <button type="button" class="button" id="go-back-signup">Back</button>
       </form>
 
       <!-- Sign-In Form -->
       <form id="login-form">
-        <h2>Sign In</h2>
-        <label for="login-email">Email:</label>
-        <input type="email" id="login-email" required>
-        <label for="login-password">Password:</label>
-        <input type="password" id="login-password" required>
-        <button type="submit">Sign In</button>
+        <h1>Sign In</h1>
+        <div class="input-row">
+          <h2 id="email-heading">Email</h2>
+          <input type="email" class="loginSignupFields" id="login-email" required aria-labelledby="email-heading" placeholder="Enter your email">
+        </div>
+        <div class="input-row">
+          <h2 id="password-heading">Password</h2>
+          <input type="password" class="loginSignupFields" id="login-password" required aria-labelledby="password-heading" placeholder="Enter your password">
+        </div>
+        <button type="submit" class="button" id="signInButton">Sign In</button>
+        <button type="button" class="button" id="go-back-signin">Back</button>
       </form>
   </div>
 

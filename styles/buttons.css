@@ -165,4 +165,95 @@
     border: 4px #4DCA72 inset;
 }
 
+#signUpButton {
+    border: 4px #4DCA72 solid;
+    border-style: outset;
+    background: none;
+    color: #474747;
+    height: 5vh;
+    margin-top: 5vh;
+}
 
+#signUpButton:hover {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#signUpButton.active {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#signUpButton:active {
+    border: 4px #4DCA72 inset;
+}
+
+#signInButton {
+    border: 4px #4DCA72 solid;
+    border-style: outset;
+    background: none;
+    color: #474747;
+    height: 5vh;
+    margin-top: 5vh;
+}
+
+#signInButton:hover {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#signInButton.active {
+    background-color: #4DCA72;
+    color: white;
+}
+
+#signInButton:active {
+    border: 4px #4DCA72 inset;
+}
+
+
+#go-back-signup {
+    border: 4px #d6ad62 solid;
+    border-style: outset;
+    height: 5vh;
+    background: none;
+    color: #474747;
+    margin-top: 5vh;
+}
+
+#go-back-signup:hover {
+    background-color: #d6ad62;
+    color: white;
+}
+
+#go-back-signup.active {
+    background-color: #d6ad62;
+    color: white;
+}
+
+#go-back-signup:active {
+    border: 4px #d6ad62 inset;
+}
+
+#go-back-signin {
+    border: 4px #d6ad62 solid;
+    border-style: outset;
+    height: 5vh;
+    background: none;
+    color: #474747;
+    margin-top: 5vh;
+}
+
+#go-back-signin:hover {
+    background-color: #d6ad62;
+    color: white;
+}
+
+#go-back-signin.active {
+    background-color: #d6ad62;
+    color: white;
+}
+
+#go-back-signin:active {
+    border: 4px #d6ad62 inset;
+}
