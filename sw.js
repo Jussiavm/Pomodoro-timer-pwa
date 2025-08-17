@@ -7,9 +7,9 @@ self.addEventListener('message', function(event) {
     });
   }
 });
-const CACHE_NAME = 'pomodoro-cache-v1.0001';
+const CACHE_NAME = 'pomodoro-cache-v1.0002';
 const urlsToCache = [
-  '/', // Change /Pomodoro-timer-pwa/ to /
+  '/',
   '/index.html',
   '/styles/app-content.css',
   '/styles/buttons.css',
