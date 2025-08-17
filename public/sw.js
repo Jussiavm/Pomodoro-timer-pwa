@@ -7,7 +7,7 @@ self.addEventListener('message', function(event) {
     });
   }
 });
-const CACHE_NAME = 'pomodoro-cache-v1.0002';
+const CACHE_NAME = 'pomodoro-cache-v1.0003';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -49,7 +49,15 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
-      return response || fetch(event.request);
+      return response || fetch(event.request).catch(() => {
+        // If fetching fails (e.g., offline), and the request is for an HTML page,
+        // serve the cached index.html
+        if (event.request.mode === 'navigate') {
+          return caches.match('/index.html');
+        }
+        // For other requests (CSS, JS, images, etc.), re-throw the error
+        throw new Error('Fetch failed and no cached response');
+      });
     })
   );
 });
