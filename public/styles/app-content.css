@@ -21,7 +21,8 @@
     display: flex;
     flex-direction: column;
     color: #474747;
-    font-size: 2.5rem;
+    margin-top: 4vh;
+    font-size: 2rem;
     font-family: Inter;
     font-weight: 700;
     word-wrap: break-word;

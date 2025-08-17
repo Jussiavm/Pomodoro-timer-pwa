@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomodoro Timer</title>
-    <link rel="stylesheet" href="styles/global-styles.css">
-    <link rel="stylesheet" href="styles/buttons.css">   
-    <link rel="stylesheet" href="styles/app-content.css"> 
-    <link rel="stylesheet" href="styles/auth-forms.css">
+    <link rel="stylesheet" href="styles/global-styles.css?v=10014">
+    <link rel="stylesheet" href="styles/buttons.css?v=10014">   
+    <link rel="stylesheet" href="styles/app-content.css?v=10014"> 
+    <link rel="stylesheet" href="styles/auth-forms.css?v=10014">
     <script src="list.js" defer></script>
     <script src="app.js" type="module" defer></script>
     <link rel="manifest" href="manifest.json">
@@ -88,8 +88,10 @@
           <h2 id="signup-password-heading">Password</h2>
           <input type="password" class="loginSignupFields" id="signup-password" required aria-labelledby="signup-password-heading" placeholder="Enter your password">
         </div>
-        <button type="submit" class="button" id="signUpButton">Sign Up</button>
-        <button type="button" class="button" id="go-back-signup">Back</button>
+        <div class="submit-row">
+          <button type="submit" class="button" id="signUpButton">Sign Up</button>
+          <button type="button" class="button" id="go-back-signup">Back</button>
+        </div>
       </form>
 
       <!-- Sign-In Form -->
@@ -103,8 +105,10 @@
           <h2 id="password-heading">Password</h2>
           <input type="password" class="loginSignupFields" id="login-password" required aria-labelledby="password-heading" placeholder="Enter your password">
         </div>
-        <button type="submit" class="button" id="signInButton">Sign In</button>
-        <button type="button" class="button" id="go-back-signin">Back</button>
+        <div class="submit-row">
+          <button type="submit" class="button" id="signInButton">Sign In</button>
+          <button type="button" class="button" id="go-back-signin">Back</button>
+        </div>
       </form>
   </div>
 
