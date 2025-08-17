@@ -19,7 +19,8 @@ const urlsToCache = [
   '/app.js',
   '/manifest.json',
   '/icons/icon-small.png',
-  '/icons/icon-large.png'
+  '/icons/icon-large.png',
+  '/sounds/bell.wav'
 ];
 
 self.addEventListener('install', event => {
