@@ -1,8 +1,7 @@
 {
     "name": "Pomodoro App",
     "short_name": "Pomodoro",
-    "start_url": "/Pomodoro-timer-pwa/index.html",
-    "display": "standalone",
+    "start_url": "/index.html",
     "background_color": "#ffffff",
     "theme_color": "#000000",
     "icons": [
